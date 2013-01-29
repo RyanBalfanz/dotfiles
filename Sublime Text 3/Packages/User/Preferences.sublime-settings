@@ -2,30 +2,30 @@
 	"color_scheme": "Packages/Color Scheme - Default/Solarized (Dark).tmTheme",
 
 	// Columns in which to display vertical rulers
-    "rulers": [80],
+	"rulers": [80],
 
-    // Set to true to draw a border around the visible rectangle on the minimap.
-    // The color of the border will be determined by the "minimapBorder" key in
-    // the color scheme
-    "draw_minimap_border": true,
+	// Set to true to draw a border around the visible rectangle on the minimap.
+	// The color of the border will be determined by the "minimapBorder" key in
+	// the color scheme
+	"draw_minimap_border": true,
 
-    // If enabled, will highlight any line with a caret
-    "highlight_line": true,
+	// If enabled, will highlight any line with a caret
+	"highlight_line": true,
 
-    // Set to "none" to turn off drawing white space, "selection" to draw only the
-    // white space within the selection, and "all" to draw all white space
-    "draw_white_space": "alll",
+	// Set to "none" to turn off drawing white space, "selection" to draw only the
+	// white space within the selection, and "all" to draw all white space
+	"draw_white_space": "all",
 
-    // Set to true to removing trailing white space on save
-    "trim_trailing_white_space_on_save": true,
+	// Set to true to removing trailing white space on save
+	"trim_trailing_white_space_on_save": true,
 
-    // Set to true to ensure the last line of the file ends in a newline
-    // character when saving
-    "ensure_newline_at_eof_on_save": true,
+	// Set to true to ensure the last line of the file ends in a newline
+	// character when saving
+	"ensure_newline_at_eof_on_save": true,
 
-    // Makes tabs with modified files more visible
-    "highlight_modified_tabs": true,
+	// Makes tabs with modified files more visible
+	"highlight_modified_tabs": true,
 
-    // Show folders in the side bar in bold
-    "bold_folder_labels": true,
+	// Show folders in the side bar in bold
+	"bold_folder_labels": true,
 }
