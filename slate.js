@@ -37,3 +37,21 @@ var grid = slate.operation("grid", {
 
 slate.bind("f:ctrl", fullscreen);
 slate.bind("g:ctrl", grid);
+
+var cornerTopLeft = slate.operation("corner", {
+  "direction" : "top-left",
+  "width" : "screenSizeX/2",
+  "height" : "screenSizeY/2"
+});
+var cornerTopRight = cornerTopLeft.dup({ "direction" : "top-right" });
+var cornerBottomLeft = cornerTopLeft.dup({ "direction" : "bottom-left" });
+var cornerBottomRight = cornerTopLeft.dup({ "direction" : "bottom-right" });
+var chain = slate.operation("chain", {
+  "operations" : [
+    cornerTopLeft,
+    cornerTopRight,
+    cornerBottomRight,
+    cornerBottomLeft
+  ]
+});
+slate.bind("1:ctrl", chain);
