@@ -55,3 +55,37 @@ var chain = slate.operation("chain", {
   ]
 });
 slate.bind("1:ctrl", chain);
+
+var pushTop = slate.operation("push", {
+  "direction" : "up",
+  "style" : "bar-resize:screenSizeY/2"
+});
+slate.bind("up:alt,ctrl,cmd", pushTop);
+
+var pushBottom = slate.operation("push", {
+  "direction" : "down",
+  "style" : "bar-resize:screenSizeY/2"
+});
+slate.bind("down:alt,ctrl,cmd", pushBottom);
+
+var pushLeft = slate.operation("push", {
+  "direction" : "left",
+  "style" : "bar-resize:screenSizeX/2"
+});
+slate.bind("left:alt,ctrl,cmd", pushLeft);
+
+var pushRight = slate.operation("push", {
+  "direction" : "right",
+  "style" : "bar-resize:screenSizeX/2"
+});
+slate.bind("right:alt,ctrl,cmd", pushRight);
+
+var chain = slate.operation("chain", {
+  "operations" : [
+    pushTop,
+    pushBottom,
+    pushLeft,
+    pushRight
+  ]
+});
+slate.bind("2:ctrl", chain);
