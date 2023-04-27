@@ -1,6 +1,6 @@
 STOW_VERBOSITY=2
 STOW_OPTIONS=--target=$(HOME) --dotfiles --verbose=$(STOW_VERBOSITY)
-STOW_PACKAGES=bin editorconfig homebrew supervisor vim vscode
+STOW_PACKAGES=editorconfig homebrew tmux
 
 .PHONY: all clean test
 all: stow
