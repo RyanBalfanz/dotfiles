@@ -18,16 +18,22 @@ brew "htop"
 brew "iperf"
 # Modern and intuitive terminal-based text editor
 brew "micro"
+# Fast, highly customisable system info script
+brew "neofetch"
 # Port scanning utility for large networks
 brew "nmap"
 # Pretty, minimal and fast ZSH prompt
 brew "pure"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
+# Organize software neatly under a single directory tree (e.g. /usr/local)
+brew "stow"
 # Tool to build, change, and version infrastructure
 brew "terraform"
 # Terminal multiplexer
 brew "tmux"
+# Display directories as trees (with optional color/HTML output)
+brew "tree"
 # Next-generation plugin manager for zsh
 brew "zplug"
 # Fish-like fast/unobtrusive autosuggestions for zsh
@@ -48,6 +54,8 @@ cask "docker"
 cask "fig"
 # Desktop client for GitHub repositories
 cask "github"
+# Client for the Google Drive storage service
+cask "google-drive"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
 # Software for Logitech devices
