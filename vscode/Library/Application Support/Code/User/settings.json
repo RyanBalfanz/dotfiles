@@ -1,0 +1,15 @@
+{
+  "[dockercompose]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "editor.accessibilitySupport": "off",
+  "workbench.colorTheme": "Default Dark+",
+  "terminal.integrated.env.osx": {
+    "FIG_NEW_SESSION": "1"
+  },
+  "git.autofetch": true,
+  "[python]": {
+    "editor.formatOnType": true
+  },
+  "cSpell.enabled": false
+}
