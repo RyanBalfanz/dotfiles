@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+ensure_checkmake() {
+    if ! command -v checkmake
+    then
+        go install github.com/mrtazz/checkmake/cmd/checkmake@latest
+    fi
+}
+
+# Validate and pretty-print JSON objects.
+python -m json.tool ./**/*.json > /dev/null
+
+shellcheck ./script/* ./bin/*
+
+ensure_checkmake && ~/go/bin/checkmake ./**/*Makefile*
