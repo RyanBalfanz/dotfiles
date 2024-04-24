@@ -4,6 +4,8 @@
 # options, key bindings, etc.
 #
 
+export EDITOR="code --wait"
+
 # Set up aliases
 alias mv='nocorrect mv'       # no spelling correction on mv
 alias cp='nocorrect cp'       # no spelling correction on cp
@@ -34,3 +36,32 @@ source /opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-high
 # zsh-autosuggestions
 # Fish-like fast/unobtrusive autosuggestions for zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# zsh-vi-mode
+# Better and friendly vi(vim) mode plugin for ZSH
+if [ -f /opt/homebrew/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh ]; then
+  source /opt/homebrew/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+fi
+
+# direnv
+# Load/unload environment variables based on $PWD
+if command -v direnv &>/dev/null; then
+  eval "$(direnv hook zsh)"
+fi
+
+# zoxide
+# Shell extension to navigate your filesystem faster
+if command -v zoxide &>/dev/null; then
+  eval "$(zoxide init zsh)"
+fi
+
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+
+# Created by `pipx` on 2024-03-30 04:44:50
+export PATH="$PATH:/Users/ryan/.local/bin"
+
+if command -v fzf &>/dev/null; then
+  eval "$(fzf --zsh)"
+fi
+
+if [ -f "/Users/ryan/.config/fabric/fabric-bootstrap.inc" ]; then . "/Users/ryan/.config/fabric/fabric-bootstrap.inc"; fi
