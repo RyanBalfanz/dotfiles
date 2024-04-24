@@ -1,6 +1,6 @@
 STOW_VERBOSITY=2
 STOW_OPTIONS=--target=$(HOME) --dotfiles --verbose=$(STOW_VERBOSITY)
-STOW_PACKAGES=editorconfig homebrew tmux vscode zsh
+STOW_PACKAGES=config editorconfig git homebrew llm tmux vscode zsh
 
 .PHONY: all clean test
 all: stow
