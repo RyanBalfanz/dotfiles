@@ -1,54 +1,150 @@
 tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/core"
 tap "homebrew/services"
+# ChatGPT cli
+brew "aichat"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.12"
+# Formatter/translator for text files to numerous formats
+brew "asciidoc"
+# Text processor and publishing toolchain for AsciiDoc
+brew "asciidoctor"
+# ChatGPT in the terminal
+brew "ata"
+# Predict genes in eukaryotic genomic sequences
+brew "augustus"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
+# Translates human-readable Butane Configs into machine-readable Ignition Configs
+brew "butane"
+# Powerful, enterprise-ready, open source web server with automatic HTTPS
+brew "caddy"
+# X.Org: Interface to the X Window System protocol
+brew "libxcb"
 # Linter/analyzer for Makefiles
 brew "checkmake"
 # Container runtimes on MacOS (and Linux) with minimal setup
 brew "colima"
+# Utility that creates projects from templates
+brew "cookiecutter"
 # Top-like interface for container metrics
 brew "ctop"
+# Open source multi-tool for exploring and publishing data
+brew "datasette"
 # Load/unload environment variables based on $PWD
 brew "direnv"
+# Modern, maintained replacement for ls
+brew "eza"
+# Play, record, convert, and stream audio and video
+brew "ffmpeg"
+# Command-line fuzzy finder written in Go
+brew "fzf"
+# GitHub command-line tool
+brew "gh"
+# Painless self-hosted all-in-one software development service
+brew "gitea", restart_service: true
+# Alternative to top/htop
+brew "glances"
+# Open source programming language to build simple/reliable/efficient software
+brew "go"
+# Post-modern modal text editor
+brew "helix"
+# Uses CSS selectors to extract bits content from HTML files
+brew "htmlq"
 # Improved top (interactive process viewer)
 brew "htop"
+# Configurable static site generator
+brew "hugo"
 # Tool to measure maximum TCP and UDP bandwidth
 brew "iperf"
+# Interactive environments for writing and running code
+brew "jupyterlab"
+# Next-gen compiler infrastructure
+brew "llvm@17"
+# Quickly generate a temporary email address
+brew "mailsy"
+# Mac App Store command-line interface
+brew "mas"
 # Modern and intuitive terminal-based text editor
 brew "micro"
 # Fast, highly customisable system info script
 brew "neofetch"
 # Port scanning utility for large networks
 brew "nmap"
+# Development kit for the Java programming language
+brew "openjdk"
+# Modern Python package and dependency manager supporting the latest PEP standards
+brew "pdm"
+# Execute binaries from Python packages in isolated environments
+brew "pipx"
 # Pretty, minimal and fast ZSH prompt
 brew "pure"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# Safe, concurrent, practical language
+brew "rust"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
+# SQL linter and auto-formatter for Humans
+brew "sqlfluff"
+# SQL formatter with width-aware output
+brew "sqlfmt"
+# CLI utility for manipulating SQLite databases
+brew "sqlite-utils"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
-# Tool to build, change, and version infrastructure
-brew "terraform"
+# Generate clients, server stubs, and docs from an OpenAPI spec
+brew "swagger-codegen"
+# Programmatically correct mistyped console commands
+brew "thefuck"
 # Terminal multiplexer
 brew "tmux"
+# CLI tool that moves files or folder to the trash
+brew "trash"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
+# Python virtualenv extensions
+brew "virtualenvwrapper"
+# Internet file retriever
+brew "wget"
+# Process YAML, JSON, XML, CSV and properties documents from the CLI
+brew "yq"
+# Feature-rich command-line audio/video downloader
+brew "yt-dlp"
+# Pluggable terminal workspace, with terminal multiplexer as the base feature
+brew "zellij"
+# Shell extension to navigate your filesystem faster
+brew "zoxide"
 # Next-generation plugin manager for zsh
 brew "zplug"
 # Fish-like fast/unobtrusive autosuggestions for zsh
 brew "zsh-autosuggestions"
 # Feature-rich syntax highlighting for Zsh
 brew "zsh-fast-syntax-highlighting"
+# Better and friendly vi(vim) mode plugin for ZSH
+brew "zsh-vi-mode"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
+# Menu bar tool to limit maximum charging percentage
+cask "aldente"
 # Chromium based browser
 cask "arc"
+# Asciidoc editor and toolchain to build books, documents and slides
+cask "asciidocfx"
+# Web browser focusing on privacy
+cask "brave-browser"
 # Free app that makes your Internet safer
 cask "cloudflare-warp"
+# Track and budget money
+cask "copilot"
 # Utilities designed to make common development tasks easier
 cask "devtoys"
-# App to build and share containerized applications and microservices
+# Voice and text chat software
+cask "discord"
+# App to build and share containerised applications and microservices
 cask "docker"
 # Reimagine your terminal
 cask "fig"
@@ -56,27 +152,109 @@ cask "fig"
 cask "github"
 # Client for the Google Drive storage service
 cask "google-drive"
+# Utility to hide menu bar items
+cask "hiddenbar"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
-# Software for Logitech devices
-cask "logitech-options"
+# End-to-end encryption software
+cask "keybase"
+# App providing offline access to Wikipedia and many other web sites
+cask "kiwix"
+# Open source code editor written in Rust
+cask "lapce"
 # Clipboard manager
 cask "maccy"
-# App to write, plan, collaborate, and get organized
+# Speech recognition tool
+cask "macwhisper"
+# App to write, plan, collaborate, and get organised
 cask "notion"
+# Get up and running with large language models locally
+cask "ollama"
 # WebKit based web browser
 cask "orion"
+# Browse, manage, inspect containers and images
+cask "podman-desktop"
+# Imaging utility to install operating systems to a microSD card
+cask "raspberry-pi-imager"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Move and resize windows using keyboard shortcuts or snap areas
 cask "rectangle"
+# Note taking app for meetings, ideas, journalling, and research
+cask "reflect"
 # Team communication and collaboration software
 cask "slack"
 # Music streaming service
 cask "spotify"
+# Tool to manage Synology NAS's across a LAN
+cask "synologyassistant"
 # Mesh VPN based on Wireguard
 cask "tailscale"
+# Multi-platform VNC client and server
+cask "tigervnc-viewer"
 # Virtual machines UI using QEMU
 cask "utm"
 # Open-source code editor
 cask "visual-studio-code"
+# Multimedia player
+cask "vlc"
+# Binary releases of VS Code without MS branding/telemetry/licensing
+cask "vscodium"
+# Rust-based terminal
+cask "warp"
+# Native desktop client for WhatsApp
+cask "whatsapp"
+# Application for generating TOTP and HOTP codes
+cask "yubico-authenticator"
+# Multiplayer code editor
+cask "zed"
+# Video communication and virtual meeting platform
+cask "zoom"
+mas "1Password for Safari", id: 1569813296
+mas "HP Smart", id: 1474276998
+mas "iMovie", id: 408981434
+mas "Simple Git Server", id: 1040403936
+vscode "4ops.packer"
+vscode "4ops.terraform"
+vscode "aaron-bond.better-comments"
+vscode "ahmadalli.vscode-nginx-conf"
+vscode "asciidoctor.asciidoctor-vscode"
+vscode "eamodio.gitlens"
+vscode "editorconfig.editorconfig"
+vscode "esbenp.prettier-vscode"
+vscode "fb-pyre-check.pyre-vscode"
+vscode "github.copilot"
+vscode "github.copilot-chat"
+vscode "golang.go"
+vscode "harryhopkinson.vim-theme"
+vscode "hashicorp.terraform"
+vscode "humao.rest-client"
+vscode "jeff-hykin.polacode-2019"
+vscode "lfm.vscode-makefile-term"
+vscode "matthewpi.caddyfile-support"
+vscode "mechatroner.rainbow-csv"
+vscode "mikestead.dotenv"
+vscode "ms-azuretools.vscode-docker"
+vscode "ms-python.debugpy"
+vscode "ms-python.isort"
+vscode "ms-python.python"
+vscode "ms-python.vscode-pylance"
+vscode "ms-vscode-remote.remote-containers"
+vscode "ms-vscode-remote.remote-ssh"
+vscode "ms-vscode-remote.remote-ssh-edit"
+vscode "ms-vscode-remote.remote-wsl"
+vscode "ms-vscode-remote.vscode-remote-extensionpack"
+vscode "ms-vscode.makefile-tools"
+vscode "ms-vscode.remote-explorer"
+vscode "ms-vscode.remote-server"
+vscode "plex.vscode-protolint"
+vscode "qwtel.sqlite-viewer"
+vscode "redhat.ansible"
+vscode "redhat.vscode-yaml"
+vscode "shd101wyy.markdown-preview-enhanced"
+vscode "streetsidesoftware.code-spell-checker"
+vscode "tamasfe.even-better-toml"
+vscode "vintharas.learn-vim"
+vscode "vscodevim.vim"
+vscode "waderyan.gitblame"
+vscode "znck.grammarly"
