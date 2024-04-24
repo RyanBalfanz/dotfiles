@@ -22,6 +22,7 @@ unstow:
 
 lint:
 	checkmake Makefile
+	 shellcheck -x -e SC2148 ./zsh/.zshrc
 
 tree:
 	tree -a -I .git .

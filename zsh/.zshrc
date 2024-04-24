@@ -31,10 +31,12 @@ prompt pure
 # zsh-fast-syntax-highlighting
 # Feature-rich syntax highlighting for Zsh
 # https://github.com/zdharma-continuum/fast-syntax-highlighting#installation
+# shellcheck disable=SC1094
 source /opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 # zsh-autosuggestions
 # Fish-like fast/unobtrusive autosuggestions for zsh
+# shellcheck disable=SC1094
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # zsh-vi-mode
