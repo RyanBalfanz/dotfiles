@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#
+# Validate and pretty-print JSON objects from stdin to stdout, passes arguments to Python's json.tool.
+
+set -e
+set -x
+
+python3 -m json.tool "$@" < /dev/stdin > /dev/stdout
