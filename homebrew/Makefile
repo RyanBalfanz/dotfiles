@@ -11,6 +11,7 @@ clean:
 
 .PHONY: test
 test:
+	checkmake Makefile
 
 .PHONY: check
 check:
@@ -21,6 +22,3 @@ Brewfile: dump
 
 dump:
 	brew bundle dump --verbose --force --describe
-
-lint:
-	checkmake Makefile
