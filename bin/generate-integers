@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+import argparse
+import enum
+import sys
+import urllib.error
+import urllib.parse
+import urllib.request
+from dataclasses import asdict, dataclass
+from typing import Literal, Sequence
+
+
+class ExitCode(enum.IntEnum):
+    OK = 0
+    ERROR = 1
+
+
+@dataclass
+class IntegersRequest:
+    """
+    >>> IntegersRequest()
+    IntegersRequest(num=0, min=0, max=0, col=0, base=10, format='plain', rnd='new')
+    """
+
+    num: int = 0
+    min: int = 0
+    max: int = 0
+    col: int = 0
+    base: int = 10
+    format: Literal["html", "plain"] = "plain"
+    rnd: Literal["new", "today", "yesterday"] = "new"
+
+    def __post_init__(self):
+        """
+        >>> a = 1_000_000_000
+        >>> test_cases = [-a-1, a+1]
+        >>> for tc in test_cases: IntegersRequest(min=tc)
+        Traceback (most recent call last):
+        ...
+        ValueError: The lower bound of the interval must be in [-1e9,1e9]
+        >>> for tc in test_cases: IntegersRequest(max=tc)
+        Traceback (most recent call last):
+        ...
+        ValueError: The upper bound of the interval must be in [-1e9,1e9]
+        """
+        if self.min < -1e9 or self.min > 1e9:
+            raise ValueError("The lower bound of the interval must be in [-1e9,1e9]")
+        if self.max < -1e9 or self.max > 1e9:
+            raise ValueError("The upper bound of the interval must be in [-1e9,1e9]")
+
+    def get_url(self) -> str:
+        """
+        >>> IntegersRequest().get_url()
+        'http://www.random.org/integers/?num=0&min=0&max=0&col=0&base=10&format=plain&rnd=new'
+        """
+        host = "www.random.org"
+        params = urllib.parse.urlencode(asdict(self))
+        return f"https://{host}/integers/?%s" % params
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = argparse.ArgumentParser()
+    _ = parser.parse_args(argv)
+
+    m = 1_000_000_000  # min and max possible values [-1e9,1e9] (inclusive)
+    req = IntegersRequest(num=3, min=-m, max=m, col=1)
+    try:
+        with urllib.request.urlopen(req.get_url()) as f:
+            print(f"HTTP status {f.status}: {f.reason}", file=sys.stderr)
+            text = f.read().decode("utf-8").strip()
+            if req.format == "plain":
+                for line in text.split("\n"):
+                    print(int(line))
+            elif req.format == "html":
+                print(text)
+    except urllib.error.HTTPError as e:
+        print(f"HTTP status {e.status}: {e.reason}", file=sys.stderr)
+        return ExitCode.ERROR
+    except urllib.error.URLError as e:
+        print(f"URL error: {e.reason}", file=sys.stderr)
+        return ExitCode.ERROR
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return ExitCode.ERROR
+    return ExitCode.OK
+
+
+if __name__ == "__main__":
+    import doctest
+
+    if doctest.testmod().failed:
+        raise SystemExit(ExitCode.ERROR)
+    raise SystemExit(main(sys.argv[1:]))

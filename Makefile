@@ -6,6 +6,7 @@ STOW_OPTIONS=--target=$(HOME) --dotfiles --verbose=$(STOW_VERBOSITY)
 STOW_PACKAGES=config editorconfig git homebrew llm tmux vscode zsh
 # Find all packages that have a Makefile in their directory
 TESTABLE_PACKAGES=$(shell find . -name Makefile -type f -mindepth 2 -exec dirname {} +)
+FORMATABLE_PACKAGES=bin
 
 # Default target
 .PHONY: all
@@ -20,6 +21,11 @@ test:
 	checkmake Makefile
 	@echo "Testing packages: $(TESTABLE_PACKAGES)"
 	@for package in $(TESTABLE_PACKAGES); do echo "Testing $$package"; make -C $$package test; done
+
+.PHONY: fmt
+fmt:
+	@echo "Formatting packages: $(FORMATABLE_PACKAGES)"
+	@for package in $(FORMATABLE_PACKAGES); do echo "Formatting $$package"; make -C $$package fmt; done
 
 # Stow the package names that follow this option
 .PHONY: stow

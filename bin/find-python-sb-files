@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#
+# Find all python scripts by inspecting the shebang line.
+
+find . -type f -exec awk 'FNR == 1 && /^#!.*python/{print FILENAME}' {} +

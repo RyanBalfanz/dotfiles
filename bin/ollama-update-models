@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#
+# Pull all models from the Ollama repository.
+
+set -e
+set -x
+
+# ollama list | tail -n +2 | awk '{print $1}' | while read -r model; do
+ollama list | tail -n +2 | tr -s ' ' | cut -f 1 | while read -r model; do
+    ollama pull "$model"
+done
+
+ollama list

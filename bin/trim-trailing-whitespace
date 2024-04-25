@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+"""Trim trailing whitespace from lines."""
+import argparse
+import fileinput
+from typing import Iterable
+
+
+def rstrip_lines(lines: Iterable[str]):
+    for line in lines:
+        yield line.rstrip()
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        prog="trim-trailing-whitespace",
+        description="Trim trailing whitespace from lines.",
+        usage="%(prog)s [FILE...]",
+    )
+    _ = parser.parse_args()
+
+    lines = (line for line in fileinput.input())
+    pipeline = rstrip_lines(lines)
+    for line in pipeline:
+        print(line)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

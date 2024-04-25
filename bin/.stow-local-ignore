@@ -1,4 +1,5 @@
 # Ignore Lists
 # https://www.gnu.org/software/stow/manual/html_node/Ignore-Lists.html#Ignore-Lists
 
+.gitignore
 Makefile
