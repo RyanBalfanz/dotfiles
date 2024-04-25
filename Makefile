@@ -3,7 +3,7 @@
 STOW_VERBOSITY=2
 STOW_OPTIONS=--target=$(HOME) --dotfiles --verbose=$(STOW_VERBOSITY)
 # List of packages to stow
-STOW_PACKAGES=config editorconfig git homebrew llm tmux vscode zsh
+STOW_PACKAGES=bin config editorconfig git homebrew llm tmux vscode zsh
 # Find all packages that have a Makefile in their directory
 TESTABLE_PACKAGES=$(shell find . -name Makefile -type f -mindepth 2 -exec dirname {} +)
 FORMATABLE_PACKAGES=bin

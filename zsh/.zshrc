@@ -22,6 +22,9 @@ alias lsa='ls -ld .*'
 
 alias reload!='exec zsh'
 
+path=('/home/david/pear/bin' $path)
+export PATH
+
 # Pure
 # https://github.com/sindresorhus/pure#homebrew
 fpath+=("$(brew --prefix)/share/zsh/site-functions")

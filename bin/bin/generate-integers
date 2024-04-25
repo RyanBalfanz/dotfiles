@@ -50,7 +50,7 @@ class IntegersRequest:
     def get_url(self) -> str:
         """
         >>> IntegersRequest().get_url()
-        'http://www.random.org/integers/?num=0&min=0&max=0&col=0&base=10&format=plain&rnd=new'
+        'https://www.random.org/integers/?num=0&min=0&max=0&col=0&base=10&format=plain&rnd=new'
         """
         host = "www.random.org"
         params = urllib.parse.urlencode(asdict(self))
