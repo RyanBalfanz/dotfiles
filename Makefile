@@ -17,15 +17,20 @@ clean:
 	find . -name .DS_Store -delete
 
 .PHONY: test
-test:
+test: lint
 	checkmake Makefile
 	@echo "Testing packages: $(TESTABLE_PACKAGES)"
 	@for package in $(TESTABLE_PACKAGES); do echo "Testing $$package"; make -C $$package test; done
 
 .PHONY: fmt
-fmt:
+fmt: lint
 	@echo "Formatting packages: $(FORMATABLE_PACKAGES)"
 	@for package in $(FORMATABLE_PACKAGES); do echo "Formatting $$package"; make -C $$package fmt; done
+
+.PHONY: lint
+lint:
+	@echo "Linting packages: $(FORMATABLE_PACKAGES)"
+	@for package in $(FORMATABLE_PACKAGES); do echo "Linting $$package"; make -C $$package lint; done
 
 # Stow the package names that follow this option
 .PHONY: stow
