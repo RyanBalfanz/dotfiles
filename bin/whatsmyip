@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#
+# Get the public IP address of the current machine.
+# https://ifconfig.me
+
+set -e
+set -x
+
+curl ifconfig.me
+# curl ifconfig.me/all
+# curl ifconfig.me/all.json
