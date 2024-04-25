@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#
 # Set preferred macOS defaults.
 # https://real-world-systems.com/docs/defaults.1.html
 # https://macos-defaults.com
