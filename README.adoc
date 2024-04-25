@@ -1,0 +1,46 @@
+// this comment line is ignored
+= Dotfiles
+Ryan Balfanz
+:description: The dotfiles of Ryan Balfanz.
+:page-layout: docs
+:keywords: dotfiles, configuration, settings, preferences, gnu stow, make
+:sectanchors:
+:url-repo: https://github.com/ryanbalfanz/dotfiles
+:url-gnu-stow: https://www.gnu.org/software/stow/
+:url-gnu-make: https://www.gnu.org/software/make/
+:toc:
+
+== Introduction
+
+These are my https://wiki.archlinux.org/title/Dotfiles[dotfiles]. There are https://github.com/search?q=dotfiles&type=repositories[many like them], but these are mine.
+
+NOTE: There are many ways to manage dotfiles. This is how I do it. It may not be the best way, but it works for me.
+
+The files in "dotfiles" are managed by {url-gnu-stow}[GNU Stow] via the {url-gnu-make}[GNU Make]. I will not go into detail about how to use Stow or Make in this document. There are many resources available online. I recommend reading documentation and experimenting.
+
+.From the GNU Stow website as of 2024-04-21:
+[quote,gnu.org,Stow - GNU Project - Free Software Foundation]
+GNU Stow is a symlink farm manager which takes distinct packages of software and/or data located in separate directories on the filesystem, and makes them appear to be installed in the same place. For example, /usr/local/bin could contain symlinks to files within /usr/local/stow/emacs/bin, /usr/local/stow/perl/bin etc., and likewise recursively for any other subdirectories such as .../share, .../man, and so on.
+
+== Usage
+
+Read the code. Use the code. Share the code. Improve the code.
+
+The short version is use `make` to manipulate the dotfiles indirectly via `stow`. This is not a new technique, but it is a good one. There are others.
+
+[source,shell]
+----
+> make simulate  # Do not actually make any filesystem changes
+> make stow      # Stow the dotfiles
+> make unstow    # Unstow the dotfiles
+----
+
+NOTE: Stow offers an option (`--dotfiles`) to enable special handling for dotfiles but I do not use it.
+
+== Contributing
+
+[source,shell]
+----
+> make test
+> make simulate
+----
