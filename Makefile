@@ -6,7 +6,7 @@ STOW_OPTIONS=--target=$(HOME) --dotfiles --verbose=$(STOW_VERBOSITY)
 STOW_PACKAGES=bin config editorconfig git homebrew llm tmux vscode zsh
 # Find all packages that have a Makefile in their directory
 TESTABLE_PACKAGES=$(shell find . -name Makefile -type f -mindepth 2 -exec dirname {} +)
-FORMATABLE_PACKAGES=bin
+FORMATABLE_PACKAGES=bin/bin
 
 # Default target
 .PHONY: all
