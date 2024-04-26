@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 import argparse
 import enum
+import ipaddress
 import sys
 import urllib.error
 import urllib.parse
 import urllib.request
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from typing import Literal, Sequence
 
 
@@ -18,10 +19,10 @@ class ExitCode(enum.IntEnum):
 class IntegersRequest:
     """
     >>> IntegersRequest()
-    IntegersRequest(num=0, min=0, max=0, col=0, base=10, format='plain', rnd='new')
+    IntegersRequest(num=1, min=0, max=0, col=0, base=10, format='plain', rnd='new')
     """
 
-    num: int = 0
+    num: int = 1
     min: int = 0
     max: int = 0
     col: int = 0
@@ -31,6 +32,14 @@ class IntegersRequest:
 
     def __post_init__(self):
         """
+        >>> IntegersRequest(num=0)
+        Traceback (most recent call last):
+        ...
+        ValueError: The number of integers requested must be in [1,1e4]
+        >>> IntegersRequest(num=10_001)
+        Traceback (most recent call last):
+        ...
+        ValueError: The number of integers requested must be in [1,1e4]
         >>> a = 1_000_000_000
         >>> test_cases = [-a-1, a+1]
         >>> for tc in test_cases: IntegersRequest(min=tc)
@@ -42,6 +51,8 @@ class IntegersRequest:
         ...
         ValueError: The upper bound of the interval must be in [-1e9,1e9]
         """
+        if self.num < 1 or self.num > 1e4:
+            raise ValueError("The number of integers requested must be in [1,1e4]")
         if self.min < -1e9 or self.min > 1e9:
             raise ValueError("The lower bound of the interval must be in [-1e9,1e9]")
         if self.max < -1e9 or self.max > 1e9:
@@ -50,11 +61,48 @@ class IntegersRequest:
     def get_url(self) -> str:
         """
         >>> IntegersRequest().get_url()
-        'https://www.random.org/integers/?num=0&min=0&max=0&col=0&base=10&format=plain&rnd=new'
+        'https://www.random.org/integers/?num=1&min=0&max=0&col=0&base=10&format=plain&rnd=new'
         """
         host = "www.random.org"
         params = urllib.parse.urlencode(asdict(self))
         return f"https://{host}/integers/?%s" % params
+
+
+@dataclass
+class IntegersPlainResponse:
+    integers: list[int] = field(default_factory=list)
+
+
+@dataclass
+class QuotaRequest:
+    ip: ipaddress.IPv4Address | ipaddress.IPv6Address | None = None
+    format: Literal["html", "plain"] = "plain"
+
+    def get_url(self) -> str:
+        """
+        >>> QuotaRequest(ipaddress.ip_address('134.226.36.80')).get_url()
+        'https://www.random.org/quota/?ip=134.226.36.80&format=plain'
+        """
+        host = "www.random.org"
+        params = urllib.parse.urlencode(
+            {k: v for k, v in asdict(self).items() if v is not None}
+        )
+        return f"https://{host}/quota/?%s" % params
+
+
+@dataclass
+class QuotaPlainResponse:
+    quota: int | None = None
+
+
+def check_quota(req: QuotaRequest | None = None) -> QuotaPlainResponse:
+    req = req if req is not None else QuotaRequest()
+    if req.format != "plain":
+        raise ValueError("Only plain format is supported")
+    with urllib.request.urlopen(req.get_url()) as f:
+        text = f.read().decode("utf-8").strip()
+        response = QuotaPlainResponse(quota=int(text))
+        return response
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -62,14 +110,17 @@ def main(argv: Sequence[str] | None = None) -> int:
     _ = parser.parse_args(argv)
 
     m = 1_000_000_000  # min and max possible values [-1e9,1e9] (inclusive)
-    req = IntegersRequest(num=3, min=-m, max=m, col=1)
+    req = IntegersRequest(num=1, min=-m, max=m, col=1)
     try:
         with urllib.request.urlopen(req.get_url()) as f:
             print(f"HTTP status {f.status}: {f.reason}", file=sys.stderr)
             text = f.read().decode("utf-8").strip()
             if req.format == "plain":
-                for line in text.split("\n"):
-                    print(int(line))
+                response = IntegersPlainResponse(
+                    integers=[int(line) for line in text.split("\n")]  # col is 1
+                )
+                for i in response.integers:
+                    print(i)
             elif req.format == "html":
                 print(text)
     except urllib.error.HTTPError as e:
@@ -81,6 +132,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
         return ExitCode.ERROR
+    quota = check_quota()
+    print(f"Quota: {quota.quota}", file=sys.stderr)
     return ExitCode.OK
 
 
