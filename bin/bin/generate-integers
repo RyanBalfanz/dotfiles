@@ -1,13 +1,68 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.12
+# -*- coding: utf-8 -*-
+"""
+Generate random integers and check quota with Random.org API.
+
+Author's note: This is creative exercise (over-engineered), where the goal is not to solve a problem quickly but to craft a work of art that showcases somewhat advanced or obscure Python topics and my authorial flair.
+"""
+
 import argparse
 import enum
+import functools
 import ipaddress
+import logging
 import sys
+import typing
 import urllib.error
 import urllib.parse
 import urllib.request
 from dataclasses import asdict, dataclass, field
-from typing import Literal, Sequence
+
+# ParamSpec for the 'before' decorator
+Pb = typing.ParamSpec("Pb")
+Rb = typing.TypeVar("Rb")
+
+# ParamSpec for the 'after' decorator
+Pa = typing.ParamSpec("Pa")
+Ra = typing.TypeVar("Ra")
+
+
+def before(bf: typing.Callable[Pb, Rb], *bfargs: Pb.args, **bfkwargs: Pb.kwargs):
+    """Decorator to invoke a specified function before the decorated function."""
+
+    def decorator[R, **P](df: typing.Callable[P, R]):
+        @functools.wraps(df)
+        def wrapper(*args: P.args, **kwargs: P.kwargs):
+            _ = bf(*bfargs, **bfkwargs)
+            return df(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def after(af: typing.Callable[Pa, Ra], *afargs: Pa.args, **afkwargs: Pa.kwargs):
+    """Decorator to invoke a specified function after the decorated function."""
+
+    def decorator[R, **P](df: typing.Callable[P, R]):
+        @functools.wraps(df)
+        def wrapper(*args: P.args, **kwargs: P.kwargs):
+            try:
+                return df(*args, **kwargs)
+            except Exception as e:
+                logging.error(e)
+                raise
+            finally:
+                _ = af(*afargs, **afkwargs)
+
+        return wrapper
+
+    return decorator
+
+
+@dataclass
+class Config:
+    quota_to_file: typing.IO = sys.stderr
 
 
 class ExitCode(enum.IntEnum):
@@ -19,16 +74,16 @@ class ExitCode(enum.IntEnum):
 class IntegersRequest:
     """
     >>> IntegersRequest()
-    IntegersRequest(num=1, min=0, max=0, col=0, base=10, format='plain', rnd='new')
+    IntegersRequest(num=1, min=0, max=0, col=1, base=10, format='plain', rnd='new')
     """
 
     num: int = 1
     min: int = 0
     max: int = 0
-    col: int = 0
+    col: int = 1
     base: int = 10
-    format: Literal["html", "plain"] = "plain"
-    rnd: Literal["new", "today", "yesterday"] = "new"
+    format: typing.Literal["html", "plain"] = "plain"
+    rnd: typing.Literal["new", "today", "yesterday"] = "new"
 
     def __post_init__(self):
         """
@@ -61,7 +116,7 @@ class IntegersRequest:
     def get_url(self) -> str:
         """
         >>> IntegersRequest().get_url()
-        'https://www.random.org/integers/?num=1&min=0&max=0&col=0&base=10&format=plain&rnd=new'
+        'https://www.random.org/integers/?num=1&min=0&max=0&col=1&base=10&format=plain&rnd=new'
         """
         host = "www.random.org"
         params = urllib.parse.urlencode(asdict(self))
@@ -76,7 +131,7 @@ class IntegersPlainResponse:
 @dataclass
 class QuotaRequest:
     ip: ipaddress.IPv4Address | ipaddress.IPv6Address | None = None
-    format: Literal["html", "plain"] = "plain"
+    format: typing.Literal["html", "plain"] = "plain"
 
     def get_url(self) -> str:
         """
@@ -92,7 +147,21 @@ class QuotaRequest:
 
 @dataclass
 class QuotaPlainResponse:
-    quota: int | None = None
+    quota: int
+
+
+def generate_integers(req: IntegersRequest | None = None) -> IntegersPlainResponse:
+    m = 1_000_000_000  # min and max possible values [-1e9,1e9] (inclusive)
+    req = req if req is not None else IntegersRequest(min=-m, max=m)
+    if req.format != "plain":
+        raise ValueError("Only plain format is supported")
+    with urllib.request.urlopen(req.get_url()) as f:
+        print(f"HTTP status {f.status}: {f.reason}", file=sys.stderr)
+        text = f.read().decode("utf-8").strip()
+        response = IntegersPlainResponse(
+            integers=[int(line) for line in text.split("\n")]
+        )
+        return response
 
 
 def check_quota(req: QuotaRequest | None = None) -> QuotaPlainResponse:
@@ -101,40 +170,39 @@ def check_quota(req: QuotaRequest | None = None) -> QuotaPlainResponse:
         raise ValueError("Only plain format is supported")
     with urllib.request.urlopen(req.get_url()) as f:
         text = f.read().decode("utf-8").strip()
-        response = QuotaPlainResponse(quota=int(text))
-        return response
+        return QuotaPlainResponse(quota=int(text))
 
 
-def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser()
-    _ = parser.parse_args(argv)
+def print_quota(to: typing.IO[str] | None = None):
+    response = check_quota()
+    print(f"Quota: {response.quota}", file=to)
 
-    m = 1_000_000_000  # min and max possible values [-1e9,1e9] (inclusive)
-    req = IntegersRequest(num=1, min=-m, max=m, col=1)
+
+@before(print_quota, to=Config.quota_to_file)
+@after(print_quota, to=Config.quota_to_file)
+def run() -> int:
     try:
-        with urllib.request.urlopen(req.get_url()) as f:
-            print(f"HTTP status {f.status}: {f.reason}", file=sys.stderr)
-            text = f.read().decode("utf-8").strip()
-            if req.format == "plain":
-                response = IntegersPlainResponse(
-                    integers=[int(line) for line in text.split("\n")]  # col is 1
-                )
-                for i in response.integers:
-                    print(i)
-            elif req.format == "html":
-                print(text)
+        response = generate_integers()
     except urllib.error.HTTPError as e:
         print(f"HTTP status {e.status}: {e.reason}", file=sys.stderr)
         return ExitCode.ERROR
     except urllib.error.URLError as e:
         print(f"URL error: {e.reason}", file=sys.stderr)
         return ExitCode.ERROR
+    else:
+        for i in response.integers:
+            print(i)
+        return ExitCode.OK
+
+
+def main(argv: typing.Sequence[str] | None = None) -> int:
+    parser = argparse.ArgumentParser()
+    _ = parser.parse_args(argv)
+    try:
+        return run()
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
         return ExitCode.ERROR
-    quota = check_quota()
-    print(f"Quota: {quota.quota}", file=sys.stderr)
-    return ExitCode.OK
 
 
 if __name__ == "__main__":
